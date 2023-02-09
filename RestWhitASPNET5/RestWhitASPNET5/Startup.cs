@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RestWhitASPNET5.Historias;
 
 namespace RestWhitASPNET5
 {
@@ -27,6 +28,7 @@ namespace RestWhitASPNET5
         {
 
             services.AddControllers();
+            services.AdicionarDependencias();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
