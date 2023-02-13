@@ -10,7 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using RestWhitASPNET5.Historias;
+using RestWhitASPNET5.Models;
+using RestWhitASPNET5.Services.Implementations;
 
 namespace RestWhitASPNET5
 {
@@ -27,6 +28,7 @@ namespace RestWhitASPNET5
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddScoped<IPersonService, PersonServiceImplementation>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
