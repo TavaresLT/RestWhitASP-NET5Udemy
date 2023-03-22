@@ -1,11 +1,23 @@
-﻿namespace RestWhitASPNET5.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace RestWhitASPNET5.Models
 {
+    [Table("person")]
     public class Person
     {
+        [Column("id")]
         public long Id { get; set; }
-        public string FirstName { get; set; }
+
+        [Column("first_name")]
+        public string FirstName { get; set; }  
+
+        [Column("last_name")]
         public string LastName { get; set; }
-        public string Addres { get; set; }
+
+        [Column("address")]
+        public string Address { get; set; }
+        
+        [Column("gender")]
         public string Gender { get; set; }
 
     }

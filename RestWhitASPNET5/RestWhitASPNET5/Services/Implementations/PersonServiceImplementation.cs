@@ -37,7 +37,7 @@ namespace RestWhitASPNET5.Services.Implementations
                 Id = IncrementAndGet(),
                 FirstName = "Milton",
                 LastName = "Yama",
-                Addres = "GM",
+                Address = "GM",
                 Gender = "Indefinido"
             };
         }
@@ -53,7 +53,7 @@ namespace RestWhitASPNET5.Services.Implementations
                 Id = IncrementAndGet(),
                 FirstName = "Person Name" + i,
                 LastName = "Person LastName" + i,
-                Addres = "Some Addres"+ i,
+                Address = "Some Addres"+ i,
                 Gender = "Indefinido"
             };
         }
