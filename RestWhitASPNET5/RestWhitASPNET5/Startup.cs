@@ -12,6 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using RestWhitASPNET5.Models;
 using RestWhitASPNET5.Services.Implementations;
+using RestWhitASPNET5.Models.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace RestWhitASPNET5
 {
@@ -28,6 +30,11 @@ namespace RestWhitASPNET5
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            var connection = Configuration["MySQLConnection:MySQLConnectionString"];
+
+            services.AddDbContext<MySQLContext>(options => options.UseMySql(connection));
+
             services.AddScoped<IPersonService, PersonServiceImplementation>();
         }
 

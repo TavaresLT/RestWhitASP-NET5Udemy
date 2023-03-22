@@ -12,7 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.4" />
     <PackageReference Include="prmToolkit.NotificationPattern" Version="1.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Script\" />
   </ItemGroup>
 
 </Project>

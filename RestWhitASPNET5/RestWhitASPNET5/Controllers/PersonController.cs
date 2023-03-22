@@ -6,7 +6,7 @@ using RestWhitASPNET5.Services.Implementations;
 namespace RestWhitASPNET5.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class PersonController : Controller
     {
         private readonly ILogger<PersonController> _logger;
@@ -33,7 +33,7 @@ namespace RestWhitASPNET5.Controllers
             return Ok(person);
         }
         
-        [HttpPost("{id}")]
+        [HttpPost]
         public IActionResult Post([FromBody] Person person)
         {          
             if (person == null)
@@ -42,7 +42,7 @@ namespace RestWhitASPNET5.Controllers
             return Ok(_personService.Create(person));
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public IActionResult Put([FromBody] Person person)
         {
             if (person == null)
@@ -51,7 +51,7 @@ namespace RestWhitASPNET5.Controllers
             return Ok(_personService.Update(person));
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public IActionResult Delete(long id)
         {
             _personService.Delete(id);
