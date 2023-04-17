@@ -33,7 +33,11 @@ namespace RestWhitASPNET5
 
             var connection = Configuration["MySQLConnection:MySQLConnectionString"];
 
-            services.AddDbContext<MySQLContext>(options => options.UseMySql(connection));
+            services.AddDbContext<MySQLContext>(options => 
+                options.UseMySql(connection, ServerVersion.AutoDetect(connection)));
+
+            //Versioning Api
+            services.AddApiVersioning();
 
             services.AddScoped<IPersonService, PersonServiceImplementation>();
         }
