@@ -11,9 +11,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using RestWhitASPNET5.Models;
-using RestWhitASPNET5.Services.Implementations;
+using RestWhitASPNET5.Business.Implementations;
 using RestWhitASPNET5.Models.Context;
 using Microsoft.EntityFrameworkCore;
+using RestWhitASPNET5.Business;
+using RestWhitASPNET5.Repository;
+using RestWhitASPNET5.Repository.Implementations;
 
 namespace RestWhitASPNET5
 {
@@ -39,7 +42,10 @@ namespace RestWhitASPNET5
             //Versioning Api
             services.AddApiVersioning();
 
-            services.AddScoped<IPersonService, PersonServiceImplementation>();
+            services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
+
+            services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
