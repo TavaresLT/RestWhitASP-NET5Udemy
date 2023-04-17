@@ -5,8 +5,9 @@ using RestWhitASPNET5.Services.Implementations;
 
 namespace RestWhitASPNET5.Controllers
 {
+    [ApiVersion("1")]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/v{version:apiVersion}")]
     public class PersonController : Controller
     {
         private readonly ILogger<PersonController> _logger;
@@ -51,7 +52,7 @@ namespace RestWhitASPNET5.Controllers
             return Ok(_personService.Update(person));
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
             _personService.Delete(id);
