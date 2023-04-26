@@ -1,32 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RestWhitASPNET5.Business;
 using RestWhitASPNET5.Models;
-using RestWhitASPNET5.Services.Implementations;
 
 namespace RestWhitASPNET5.Controllers
 {
+    [ApiVersion("1")]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/v{version:apiVersion}")]
     public class PersonController : Controller
     {
         private readonly ILogger<PersonController> _logger;
-        private readonly IPersonService _personService;
-        public PersonController(ILogger<PersonController> logger, IPersonService personService)
+
+        // Declaration of the service used
+        private readonly IPersonBusiness _personBusiness;
+
+        // Injection of an instance of IPersonService
+        // when creating an instance of PersonController
+        public PersonController(ILogger<PersonController> logger, IPersonBusiness personBusiness)
         {
             _logger = logger;
-            _personService = personService;
+            _personBusiness = personBusiness;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_personService.FindAll());
+            return Ok(_personBusiness.FindAll());
         }
         
         [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
-            var person = _personService.FindById(id);
+            var person = _personBusiness.FindById(id);
             if (person == null)
                 NotFound();
 
@@ -39,7 +45,7 @@ namespace RestWhitASPNET5.Controllers
             if (person == null)
                 BadRequest();
 
-            return Ok(_personService.Create(person));
+            return Ok(_personBusiness.Create(person));
         }
 
         [HttpPut]
@@ -48,13 +54,13 @@ namespace RestWhitASPNET5.Controllers
             if (person == null)
                 BadRequest();
 
-            return Ok(_personService.Update(person));
+            return Ok(_personBusiness.Update(person));
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            _personService.Delete(id);
+            _personBusiness.Delete(id);
 
             return NoContent();
         }
