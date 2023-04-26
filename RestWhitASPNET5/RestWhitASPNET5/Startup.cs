@@ -1,33 +1,33 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using RestWhitASPNET5.Models.Context;
+using RestWhitASPNET5.Business;
+using RestWhitASPNET5.Business.Implementations;
+using RestWhitASPNET5.Repository;
+using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using RestWhitASPNET5.Models;
-using RestWhitASPNET5.Business.Implementations;
-using RestWhitASPNET5.Models.Context;
-using Microsoft.EntityFrameworkCore;
-using RestWhitASPNET5.Business;
-using RestWhitASPNET5.Repository;
 using RestWhitASPNET5.Repository.Implementations;
 
 namespace RestWhitASPNET5
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
+        public IWebHostEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+        {
+            Environment = environment;
+            Configuration = configuration;
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .CreateLogger();
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -36,8 +36,12 @@ namespace RestWhitASPNET5
 
             var connection = Configuration["MySQLConnection:MySQLConnectionString"];
 
-            services.AddDbContext<MySQLContext>(options => 
-                options.UseMySql(connection, ServerVersion.AutoDetect(connection)));
+            services.AddDbContext<MySQLContext>(options => options.UseMySql(connection));
+
+            if (Environment.IsDevelopment())
+            {
+                MigrateDatabase(connection);
+            }
 
             //Versioning Api
             services.AddApiVersioning();
@@ -45,6 +49,10 @@ namespace RestWhitASPNET5
             services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
 
             services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
+            
+            services.AddScoped<IBooksBusiness, BooksBusinessImplementation>();
+
+            services.AddScoped<IBooksRepository, BooksRepositoryImplementation>();
 
         }
 
@@ -67,6 +75,25 @@ namespace RestWhitASPNET5
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private static void MigrateDatabase(string connection)
+        {
+            try 
+            {
+                var evolveConnection = new MySql.Data.MySqlClient.MySqlConnection(connection);
+                var evolve = new Evolve.Evolve(evolveConnection, msg => Log.Information(msg))
+                {
+                    Locations = new List<string> { "db/migrations", "db/dataset" },
+                    IsEraseDisabled = true,
+                };
+                evolve.Migrate();
+            } 
+            catch (Exception ex)
+            {
+                Log.Error("Database migration failed", ex);
+                throw;
+            }
         }
     }
 }
