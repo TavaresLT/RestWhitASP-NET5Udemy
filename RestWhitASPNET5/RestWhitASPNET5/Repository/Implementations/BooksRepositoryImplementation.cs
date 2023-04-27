@@ -22,7 +22,8 @@ namespace RestWhitASPNET5.Repository.Implementations
 
         public Books FindById(long id) 
         {
-            return context.Books.SingleOrDefault(b => b.Id.Equals(id));
+            return context.Books.SingleOrDefault(b => b.Id.Equals((int)id)); ;
+
         }
 
         public Books Create(Books books) 
@@ -49,7 +50,7 @@ namespace RestWhitASPNET5.Repository.Implementations
             {
                 try
                 {
-                    context.Add(books);
+                    context.Entry(result).CurrentValues.SetValues(books);
                     context.SaveChanges();
                 }
                 catch (Exception)
