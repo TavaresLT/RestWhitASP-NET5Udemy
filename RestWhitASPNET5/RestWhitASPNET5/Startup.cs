@@ -11,7 +11,7 @@ using RestWhitASPNET5.Repository;
 using Serilog;
 using System;
 using System.Collections.Generic;
-using RestWhitASPNET5.Repository.Implementations;
+using RestWhitASPNET5.Repository.Generic;
 
 namespace RestWhitASPNET5
 {
@@ -47,12 +47,10 @@ namespace RestWhitASPNET5
             services.AddApiVersioning();
 
             services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
-
-            services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
             
             services.AddScoped<IBooksBusiness, BooksBusinessImplementation>();
 
-            services.AddScoped<IBooksRepository, BooksRepositoryImplementation>();
+            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
         }
 

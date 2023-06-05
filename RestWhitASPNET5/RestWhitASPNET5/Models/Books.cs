@@ -1,14 +1,12 @@
-﻿using System;
+﻿using RestWhitASPNET5.Models.Base;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RestWhitASPNET5.Models
 {
     [Table("books")]
-    public class Books
+    public class Books :  BaseEntity
     {
-        [Column("id")]
-        public int Id { get; set; }
-
         [Column("author")]
         public string Author { get; set; }
 
@@ -20,6 +18,5 @@ namespace RestWhitASPNET5.Models
 
         [Column("title")]
         public string Title { get; set; }
-
     }
 }

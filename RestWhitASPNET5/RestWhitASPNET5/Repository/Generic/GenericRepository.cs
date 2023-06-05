@@ -19,6 +19,16 @@ namespace RestWhitASPNET5.Repository.Generic
             dataset = context.Set<T>();
         }
 
+        public List<T> FindAll()
+        {
+            return dataset.ToList();
+        }
+
+        public T FindById(long Id)
+        {
+            return dataset.SingleOrDefault(p => p.Id.Equals((int)Id));
+        }
+
         public T Create(T item)
         {
             try
@@ -31,34 +41,6 @@ namespace RestWhitASPNET5.Repository.Generic
                 throw;
             }
             return item;
-        }
-
-        public void Delete(long Id)
-        {
-            var result = FindById(Id);
-
-            if (result != null)
-            {
-                try
-                {
-                    dataset.Remove(result);
-                    _context.SaveChanges();
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-            }
-        }
-
-        public List<T> FindAll()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public T FindById(long Id)
-        {
-            return dataset.SingleOrDefault(p => p.Id.Equals(Id));
         }
 
         public T Update(T item)
@@ -80,8 +62,25 @@ namespace RestWhitASPNET5.Repository.Generic
             }
             else 
             {
-                
                 return null;
+            }
+        }
+
+        public void Delete(long Id)
+        {
+            var result = FindById(Id);
+
+            if (result != null)
+            {
+                try
+                {
+                    dataset.Remove(result);
+                    _context.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
         }
 
